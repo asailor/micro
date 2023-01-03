@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdsig.system.dao.BdMenuMappingDao">
+    <select id="searchRecord" resultMap="com.gdsig.mybatis.mapper.BdMenuMappingMapper.BaseResultMap">
+        SELECT
+        id, number, name, menu_id, css, status
+        FROM
+        bd_menu_mapping
+        WHERE 1 = 1
+        <if test="queryParam.name!=null">
+            AND name LIKE concat("%",#{queryParam.name},"%")
+        </if>
+        <if test="queryParam.menuId!=null">
+            AND menu_id = #{queryParam.menuId}
+        </if>
+    </select>
+</mapper>

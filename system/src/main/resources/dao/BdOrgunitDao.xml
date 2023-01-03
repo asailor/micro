@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdsig.system.dao.BdOrgunitDao">
+    <select id="searchRecord" resultMap="com.gdsig.mybatis.mapper.BdOrgunitMapper.BaseResultMap">
+        SELECT
+        id, name, number, create_time,
+        modify_time, status, phone,
+        sequence, level, parent_id,
+        type, cert_type, idcard,
+        contact, address, longitude,
+        latitude, address_id
+        FROM
+        bd_orgunit
+        WHERE 1 = 1
+        <if test="queryParam.status!=null">
+            AND status = #{queryParam.status}
+        </if>
+        <if test="queryParam.name!=null">
+            AND name LIKE concat("%",#{queryParam.name},"%")
+        </if>
+        <if test="queryParam.parentId!=null">
+            AND parent_id = #{queryParam.parentId}
+        </if>
+    </select>
+</mapper>

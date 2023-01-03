@@ -1,0 +1,61 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /micro    #项目访问路径
+  max-http-header-size: 102400  #防止后台权限保存数据过大
+
+spring:
+  application:
+    name: feign-customer
+    main:
+      allow-bean-definition-overriding: true  # 允许统一微服务多个远程调用接口
+  output:
+    ansi:
+      enabled: detect
+
+eureka:
+  client:
+#    register-with-eureka: false #不向 eureka 注册自己
+    service-url:
+      defaultZone: http://localhost:7001/eureka/
+
+feign:
+  httpclient:
+    enabled: true
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: 8c74d7c924494b2b94a216785e7f47ac #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+
+project:
+  debug:
+    enabled: true
+    resp-print: false
+
+# log4j配置
+logging:
+  config: classpath:logback.xml
+
+# 接口文档登录验证：http://localhost:8001/micro/swagger-ui.html
+swagger:
+  production: false
+  basic:
+    enable: true
+    username: xs
+    password: 123456
+
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdsig.system.dao.BdMenuDao">
+    <select id="searchRecord" resultMap="com.gdsig.mybatis.mapper.BdMenuMapper.BaseResultMap">
+        SELECT
+        id, name, parent_id, status, sequence, level, path, icon, type, number
+        FROM
+        bd_menu
+        WHERE 1 = 1
+        <if test="queryParam.status!=null">
+            AND status = #{queryParam.status}
+        </if>
+        <if test="queryParam.name!=null">
+            AND name LIKE concat("%",#{queryParam.name},"%")
+        </if>
+        <if test="queryParam.parentId!=null">
+            AND parent_id = #{queryParam.parentId}
+        </if>
+    </select>
+
+    <select id="findByParentId" resultMap="com.gdsig.mybatis.mapper.BdRoleMapper.BaseResultMap">
+        SELECT
+        *
+        FROM
+        bd_role
+        WHERE parent_id = #{parentId}
+    </select>
+</mapper>

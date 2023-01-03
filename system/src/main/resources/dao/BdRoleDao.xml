@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdsig.system.dao.BdRoleDao">
+    <select id="searchRecord" resultMap="com.gdsig.mybatis.mapper.BdRoleMapper.BaseResultMap">
+        SELECT
+        id,
+        creator_id,
+        create_time,
+        name,
+        status,
+        parent_id,
+        superadmin,
+        type
+        FROM
+        bd_role
+        WHERE 1 = 1
+        <if test="queryParam.status!=null">
+            AND status = #{queryParam.status}
+        </if>
+        <if test="queryParam.name!=null">
+            AND name LIKE concat("%",#{queryParam.name},"%")
+        </if>
+        <if test="queryParam.parentId!=null">
+            AND parentId = #{queryParam.parentId}
+        </if>
+    </select>
+
+    <select id="findByParentId" resultMap="com.gdsig.mybatis.mapper.BdMenuMapper.BaseResultMap">
+        SELECT
+        id, name, parent_id, status, sequence, level, path, icon, type, number
+        FROM
+        bd_menu
+        WHERE parentId = #{parentId}
+
+    </select>
+
+    <select id="getSuperAdminRole" resultMap="com.gdsig.mybatis.mapper.BdMenuMapper.BaseResultMap">
+        select
+        <include refid="com.gdsig.mybatis.mapper.BdMenuMapper.Base_Column_List" />
+        from bd_role
+        where superadmin = true
+    </select>
+</mapper>
