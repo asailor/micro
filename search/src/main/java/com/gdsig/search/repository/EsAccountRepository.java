@@ -1,6 +1,8 @@
 package com.gdsig.search.repository;
 
 import com.gdsig.search.model.EsAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Component;
 

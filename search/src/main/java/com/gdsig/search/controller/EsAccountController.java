@@ -1,5 +1,6 @@
 package com.gdsig.search.controller;
 
+import com.gdsig.search.model.EsAccount;
 import com.gdsig.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,19 @@ public class EsAccountController {
         searchService.search();
     }
 
+    @GetMapping(value = "/{id}")
+    EsAccount get(@PathVariable Integer id) {
+        return searchService.get(id);
+    }
+
     @PostMapping(value = "/add")
     void create() {
-        searchService.create();
+        searchService.add();
     }
+
+    @PostMapping(value = "/{id}/delete")
+    void delete(@PathVariable Integer id) {
+        searchService.delete(id);
+    }
+
 }

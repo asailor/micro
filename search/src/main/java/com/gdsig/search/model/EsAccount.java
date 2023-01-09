@@ -10,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Document(indexName = "account", shards = 1,replicas = 0)
+@Document(indexName = "account", shards = 1, replicas = 0)
 public class EsAccount implements Serializable {
     private static final long serialVersionUID = -1L;
 
@@ -33,7 +34,9 @@ public class EsAccount implements Serializable {
     @Field(type = FieldType.Text)
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @Field(type= FieldType.Date, format= DateFormat.custom, pattern="yyyy-MM-dd HH:mm:ss.SSS")
-    private Date createTime;
+    @Field( type = FieldType.Date,
+            format = DateFormat.date_hour_minute_second_millis
+    )
+//    @JsonFormat (shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    private LocalDateTime createTime;
 }

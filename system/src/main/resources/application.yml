@@ -55,4 +55,3 @@ rocketmq:
     group: system-group
     send-message-timeout: 3000
 
-
