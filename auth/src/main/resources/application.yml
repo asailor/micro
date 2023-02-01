@@ -29,6 +29,10 @@ spring:
         max-idle: 8
         max-wait: -1
         min-idle: 0
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
 
 eureka:
   client:

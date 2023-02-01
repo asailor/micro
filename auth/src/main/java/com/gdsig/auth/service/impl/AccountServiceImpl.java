@@ -1,15 +1,20 @@
 package com.gdsig.auth.service.impl;
 
+import com.gdsig.auth.feign.RoleApi;
 import com.gdsig.auth.service.AccountCacheService;
 import com.gdsig.auth.service.AccountService;
 import com.gdsig.common.constant.RedissionKeyConsts;
+import com.gdsig.common.dto.system.RoleDto;
+import com.gdsig.common.exception.RespException;
 import com.gdsig.common.result.CommonResult;
+import com.gdsig.common.result.RespCodeEnum;
 import com.gdsig.common.util.JwtTokenUtil;
 import com.gdsig.mybatis.mapper.BdAccountMapper;
 import com.gdsig.mybatis.model.BdAccount;
 import com.gdsig.mybatis.model.BdAccountExample;
 import com.gdsig.security.pojo.Account;
 import com.gdsig.security.pojo.AccountDetails;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
@@ -52,7 +57,11 @@ public class AccountServiceImpl implements AccountService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    @Autowired
+    RoleApi roleApi;
+
     @Override
+    @GlobalTransactional(name = "mrc-create-order", rollbackFor = Exception.class)
     public CommonResult<String> register(String number, String passwrod) {
 
         BdAccount account = findByNumber(number);
@@ -75,10 +84,29 @@ public class AccountServiceImpl implements AccountService {
             account.setPassword(passwordEncoder.encode(passwrod));
             account.setPhone("1");
             account.setCreateTime(new Date());
+            account.setOrgunitId(1);
+
+            RoleDto roleDto = new RoleDto();
+            roleDto.setName("seate测试");
+            roleDto.setOrgunitId("1");
+            roleDto.setTypeId(1);
+            roleDto.setSuperadmin(false);
+
+            CommonResult<Void> roleResult = roleApi.add(roleDto);
+
+            if(!RespCodeEnum.Success.getCode().equals(roleResult.getCode())){
+                throw new Exception(roleResult.getMessage());
+            }
+
             accountMapper.insert(account);
-            redissonLock.unlock();
         } catch (InterruptedException e) {
             return CommonResult.fail("系统异常，请稍后重试");
+        } catch (Exception e){
+            return CommonResult.fail(e.getMessage());
+        }finally {
+            if (redissonLock != null){
+                redissonLock.unlock();
+            }
         }
 
         return CommonResult.ok("注册成功", null);

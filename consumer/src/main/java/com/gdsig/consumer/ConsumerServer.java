@@ -2,6 +2,7 @@ package com.gdsig.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
@@ -10,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2022/11/24下午 5:40
  */
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableEurekaClient
 @EnableFeignClients(basePackages = {"com.gdsig.consumer.service.*"})
 public class ConsumerServer {

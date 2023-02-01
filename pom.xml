@@ -50,6 +50,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>1.4.7.RELEASE</version>
+            </dependency>
+
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.27</version>
@@ -215,6 +221,25 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>2.3.0.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-seata</artifactId>
+                <version>2.1.0.RELEASE</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>seata-all</artifactId>
+                        <groupId>io.seata</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/io.seata/seata-all -->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>1.4.2</version>
             </dependency>
 
         </dependencies>
