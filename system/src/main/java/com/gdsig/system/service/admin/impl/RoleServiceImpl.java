@@ -14,6 +14,7 @@ import com.gdsig.mybatis.model.*;
 import com.gdsig.system.dao.*;
 import com.gdsig.system.service.admin.RoleService;
 import com.github.pagehelper.PageHelper;
+import io.seata.core.context.RootContext;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -117,6 +118,9 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Result<Void> saveOrUpdate(String accountId, Integer id, RoleDto dto) throws Exception {
+
+        System.out.println(RootContext.getXID());
+
         BdAccount account = accountMapper.selectByPrimaryKey(accountId);
         if (account == null) {
             return new Result<>(false, RespCodeEnum.AccountInvalid.getMsg());

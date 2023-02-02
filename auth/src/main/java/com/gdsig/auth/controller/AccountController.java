@@ -22,7 +22,14 @@ public class AccountController {
 
     @PostMapping("/register")
     CommonResult<String> register(@RequestParam String username, @RequestParam("password") String password){
-        return accountService.register(username, password);
+
+        try {
+            return accountService.register(username, password);
+        }catch (Exception e){
+            e.printStackTrace();
+            return CommonResult.fail(e.getMessage());
+        }
+
     }
 
     @PostMapping("/login")
