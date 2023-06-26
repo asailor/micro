@@ -3,8 +3,11 @@ package com.gdsig.system.service;
 import com.gdsig.common.constant.RocketMqConsts;
 import com.gdsig.common.util.DateUtil;
 import com.gdsig.security.pojo.Account;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.TransactionSendResult;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -19,7 +22,7 @@ import java.util.Date;
  */
 
 @Service
-public class RocketMqTestServiceImpl implements RocketMqTestService{
+public class RocketMqTestServiceImpl implements RocketMqTestService {
 
     @Resource
     RocketMQTemplate rocketMqTemplate;
@@ -28,12 +31,14 @@ public class RocketMqTestServiceImpl implements RocketMqTestService{
 
     @Override
     public void send() {
+
+        // TODO: 返回消息失败信息、事务消息、死信队列的监听
         Account account = new Account();
         account.setId("1");
         account.setNumber("1...");
         Message<Account> msg = MessageBuilder.withPayload(account).build();
         rocketMqTemplate.send(RocketMqConsts.SYSTEM_TOPIC, msg);
-        System.out.println("发送消息：" + account.toString());
+        System.out.println("发送消息：" + account);
     }
 
     @Override
@@ -43,7 +48,6 @@ public class RocketMqTestServiceImpl implements RocketMqTestService{
         account.setNumber("1...");
 
         Message<Account> msg = MessageBuilder.withPayload(account).build();
-
         SendResult sendResult = rocketMqTemplate.syncSend(RocketMqConsts.SYSTEM_TOPIC, msg);
         System.out.println(sendResult.toString());
     }
@@ -62,10 +66,10 @@ public class RocketMqTestServiceImpl implements RocketMqTestService{
                 System.out.println(throwable.getMessage());
             }
         };
+
         Account account = new Account();
         account.setId("1");
         account.setNumber("1...");
-
         Message<Account> msg = MessageBuilder.withPayload(account).build();
         rocketMqTemplate.asyncSend(TOPIC, msg, callback);
 
