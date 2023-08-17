@@ -32,6 +32,8 @@ public class RocketMqTestServiceImpl implements RocketMqTestService {
     @Override
     public void send() {
 
+        // TODO: 返回消息失败信息、事务消息、死信队列的监听..
+
         // TODO: 返回消息失败信息、事务消息、死信队列的监听.
         Account account = new Account();
         account.setId("1");

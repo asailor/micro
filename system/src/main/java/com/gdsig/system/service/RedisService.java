@@ -91,10 +91,11 @@ public class RedisService {
      *
      * @param key 键
      */
-    public void remove(final String key) {
+    public boolean remove(final String key) {
         if (exists(key)) {
             redisTemplate.delete(key);
         }
+        return false;
     }
 
     /**

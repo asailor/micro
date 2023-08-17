@@ -11,10 +11,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * String 工具类
@@ -458,6 +455,10 @@ public class StringUtil {
         }
 
         return new String(outSteam.toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    public static String UUID() {
+        return UUID.randomUUID().toString();
     }
 
     public static void main(String[] args) {

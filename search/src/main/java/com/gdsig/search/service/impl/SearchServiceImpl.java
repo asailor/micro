@@ -32,7 +32,6 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public void search() {
         Pageable pageable = PageRequest.of(0, 10);
-
         Page<EsAccount> esAccounts = accountRepository.findAll(pageable);
 
         List<EsAccount> accounts = esAccounts.get().collect(Collectors.toList());

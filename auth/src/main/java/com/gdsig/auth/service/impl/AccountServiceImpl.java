@@ -63,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
     RoleApi roleApi;
 
     @Override
+//    @GlobalTransactional(name = "mrc-create-order", rollbackFor = Exception.class)
     public CommonResult<String> register(String number, String passwrod) {
 
         BdAccount account = findByNumber(number);
@@ -71,8 +72,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         // redis锁
-//        RLock redissonLock = redissonClient.getLock(RedissionKeyConsts.ACCOUNT_REGISTER_KEY + number);
-
+        RLock redissonLock = redissonClient.getLock(RedissionKeyConsts.ACCOUNT_REGISTER_KEY + number);
             // 5秒后未获取到锁返回false
 //        redissonLock.tryLock(5, TimeUnit.SECONDS);
         account = new BdAccount();
